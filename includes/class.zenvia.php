@@ -63,14 +63,14 @@ class Zenvia
 	        //$data['update_existing'] = true;
 	        $data_json = json_encode($sendSmsRequest, JSON_PRETTY_PRINT);
 	        
-	        var_dump($data_json);        
+	        //var_dump($data_json);        
 	        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_json);
 	        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
 	    }
 	    //curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: ".$return));
 	    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	    $result = curl_exec($ch);
-	    var_dump($result);
+	    //var_dump($result);
 
 	    curl_close($ch);
 

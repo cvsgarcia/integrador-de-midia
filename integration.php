@@ -1,37 +1,45 @@
 <?php
 
-$config = include_once('config.php');
+$config = include_once('includes/config.php');
 
 foreach (glob("includes/class.*.php") as $filename)
 {
     include_once $filename;
-    var_dump($filename);
 }
 $data = $_POST;
+$refeer = isset($_SERVER['HTTP_REFERER'])  ? $_SERVER['HTTP_REFERER'] : false;
 
+array_pop($data);
+if( !isset($data['email']))
+{
+	return;
+}
 
 if($config['mailchimp'])
 {
-	$MC = new MC($conf);
+	$MC = new MC($config);
 	$MC->setData($data);
-	$MC->send();
+	//$MC->send();
 }
 if($config['pipedrive'])
 {
-	$pipe = new Pipedrive($conf);
-	if($pipe->setData($data))
+	$pipe = new Pipedrive($config);
+	
+	$pipe->setData($data);
+	
+	
+	$personId = $pipe->create_person();
+	if(isset($personId))
 	{
-		$personId = $pipe->createPerson();
-		if(isset($personId))
-		{
-			$pipe->create_deal();
-		}
+		$ret = $pipe->create_deal();
 	}
+	
 }
 if($config['zenvia'])
 {
-	$zenv = new Zenvia($conf);
+	$zenv = new Zenvia($config);
 	$sms = $zenv->setData($data);
 	if($sms)
 	$zenv->send();
 }
+header("Location: " . $refeer . "Sucesso");

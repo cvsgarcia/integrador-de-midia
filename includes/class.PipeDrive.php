@@ -18,10 +18,9 @@ class Pipedrive
   	public function setData($data)
   	{
   		extract($data);
-  		if( !($name&&$email&&$phone) )
-		{
-			return false;
-		}
+  		$name = isset($name)? $name:'';
+  		$phone = isset($phone)? $phone:'';
+  		
 		$this->person = array(
 		 'name' => $name,
 		 'email' => $email,
@@ -71,7 +70,7 @@ class Pipedrive
 		); 
 
 		$url = "https://api.pipedrive.com/v1/deals?api_token=" .  $this->api_token;
-		var_dump($url);
+		//var_dump($url);
 
 
 		$ch = curl_init();
